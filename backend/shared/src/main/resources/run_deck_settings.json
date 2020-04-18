@@ -1,0 +1,9 @@
+{
+	"runDeckUrl": "https://rundeck.devfactory.com/api/31",
+	"runDeckToken": "dummy",
+	"runDeckProvisionJob": "a322bb25-4a45-43ad-9c3a-263b1e37a2ae",
+	"limitRetries": false,
+	"maxProvisioningAttempts": 2,
+	"runDeckDeprovisionJob": "29e0c5eb-c2bc-44a2-a5a0-c0b1e21ba11d",
+	"runDeckExecutionUrl": "https://rundeck.devfactory.com/project/XORWA/execution/show/"
+}

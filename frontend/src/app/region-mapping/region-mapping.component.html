@@ -1,0 +1,31 @@
+<div *ngIf="loadingCount>0" class="loading">Loading&#8230;</div>
+  <div class="d-flex justify-content-between">
+    <div></div>
+    <div>
+      <legend>
+        <h2 class="text-center">
+          <b>Region mapping</b>
+        </h2>
+      </legend>
+    </div>
+  <div>
+    <button class="btn btn-sm" (click)="redirect.dashboard()" title="Assessment dashboard"><i class="fas fa-clipboard"></i></button>| 
+    <button class="btn btn-sm" (click)="logout()" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+  </div>
+</div>
+<div *ngIf="errorMessage" class="row text-danger">{{errorMessage}}</div>
+<dx-data-grid [dataSource]="gridDataSource" [allowColumnResizing]="true" columnResizingMode="widget" [showBorders]="true">
+  <dxo-export [enabled]="true" fileName="region_mappings" [allowExportSelectedData]="false"></dxo-export>
+  <dxo-remote-operations [paging]="true" [filtering]="true" [sorting]="true"></dxo-remote-operations>
+  <dxo-paging [pageSize]="selectedPageSize"></dxo-paging>
+  <dxo-pager [showInfo]="true" [showPageSizeSelector]="true" [allowedPageSizes]="validPageSizes"></dxo-pager>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-editing [allowUpdating]="true" mode="batch"></dxo-editing>       
+  <dxi-column dataField="country.name" caption="Country" dataType="string" [allowFiltering]="false"
+      [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="region.name" caption="Region" dataType="string" [allowFiltering]="false">
+    <dxo-lookup [dataSource]="regions"></dxo-lookup>
+  </dxi-column>
+</dx-data-grid>    
+

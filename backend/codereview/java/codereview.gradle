@@ -1,0 +1,38 @@
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+checkstyle {
+    ignoreFailures = true
+    toolVersion = '8.28'
+    configFile = file("${rootProject.projectDir}/codereview/java/checkstyle/checkstyle.xml")
+    configProperties = ['project.basedir' : "${rootProject.projectDir}" ]
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    toolVersion = '6.20.0'
+    ruleSetFiles = files("${rootProject.projectDir}/codereview/java/pmd/ruleset.xml")
+    ruleSets = []
+}
+
+findbugs {
+    toolVersion = '3.0.1'
+    ignoreFailures = true
+}
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}

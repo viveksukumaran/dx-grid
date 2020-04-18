@@ -1,0 +1,67 @@
+<div *ngIf="loadingCount>0" class="loading">Loading&#8230;</div>
+
+  <div class="d-flex justify-content-between">
+    <div></div>
+    <div>
+      <legend>
+        <h2 class="text-center">
+          <b>RWA Dashboard</b>
+        </h2>
+      </legend>
+    </div>
+    <div>
+      <button class="btn btn-sm" (click)="redirect.regions()" title="Map regions"><i class="fas fa-globe"></i></button> | <button class="btn btn-sm" (click)="logout()" title="Logout"><i class="fas fa-sign-out-alt"></i></button>     
+    </div>
+  </div> 
+  <div *ngIf="errorMessage" class="row text-danger">{{errorMessage}}</div>
+  <dx-data-grid [dataSource]="gridDataSource" [allowColumnResizing]="true" columnResizingMode="widget" 
+    [showBorders]="true" [wordWrapEnabled]="true" [columnHidingEnabled]="true" columnAutoWidth="true">
+    <dxo-export [enabled]="true" fileName="rwa" [allowExportSelectedData]="false" [customizeExcelCell]="customizeExcelCell"></dxo-export>
+    <dxo-remote-operations [paging]="true" [filtering]="true" [sorting]="true"></dxo-remote-operations>
+    <dxo-paging [pageSize]="selectedPageSize"></dxo-paging>
+    <dxo-pager [showInfo]="true" [showPageSizeSelector]="true" [allowedPageSizes]="validPageSizes"></dxo-pager>
+    <dxo-header-filter [visible]="true"></dxo-header-filter>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <div *dxTemplate="let cell of 'jobLink'">
+      <a href="{{cell.data.provisionJobLink}}">{{cell.data.provisioningJobId}}</a>
+    </div>
+    <div *dxTemplate="let cell of 'actions'">
+      <div *ngIf="'active' === cell.data.rwaStatus">
+        <button class="btn btn-primary btn-sm" (click)="deProvision(cell.rowIndex)">kill</button>
+      </div>
+      <div *ngIf="showRetryButton(cell.rowIndex)">
+        <button class="btn btn-sm" (click)="retryProvisioning(cell.rowIndex)">
+          <i class="fa fa-redo"></i>
+        </button>
+      </div>
+    </div>
+    <dxo-editing [allowUpdating]="true" mode="batch"></dxo-editing>
+    <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser> 
+    <dxi-column [allowEditing]="false" dataField="created" caption="Creation Date" dataType="date" format="dd-MM-yyyy" 
+      [calculateCellValue]="toDate" [allowHeaderFiltering]="false"></dxi-column>
+    <dxi-column [allowEditing]="false" dataField="username" caption="Username" dataType="string" [allowFiltering]="false" 
+      [customizeText]="prefixUsername"></dxi-column>
+    <dxi-column [allowEditing]="false" dataField="candidateName" caption="Name" dataType="string" [allowFiltering]="false"></dxi-column>
+    <dxi-column [allowEditing]="false" dataField="candidateEmail" caption="Email" dataType="string" [allowHeaderFiltering]="false"
+      [filterOperations]="['contains']"></dxi-column>
+    <dxi-column [allowEditing]="false" dataField="uuid" caption="Assessment id" dataType="string" [allowFiltering]="false"></dxi-column>
+    <dxi-column [allowEditing]="false" dataField="salesforceOrderId" dataType="string" caption="Salesforce Order"
+      [allowFiltering]="false"></dxi-column>
+    <dxi-column [allowEditing]="false" dataField="rwaStatus" dataType="string" caption="RWA Status" 
+      [(filterValues)]="selectedRwaStatusFilters" [allowHeaderFiltering]="true" [allowFiltering]="false">
+      <dxo-header-filter [dataSource]="rwaStatusFilters"></dxo-header-filter>
+    </dxi-column> 
+    <dxi-column dataField="status" caption="Assessment Status" dataType="string" 
+      [(filterValues)]="selectedStatusFilters" [allowHeaderFiltering]="true" [allowFiltering]="false">
+      <dxo-lookup [dataSource]="validStatuses"></dxo-lookup>
+      <dxo-header-filter [dataSource]="statusFilters"></dxo-header-filter>
+    </dxi-column> 
+    <dxi-column [allowEditing]="false" dataField="provisioningJobId" caption="Rundeck job" dataType="string" cellTemplate="jobLink" 
+      [allowFiltering]="false">
+    </dxi-column>
+    <dxi-column [allowEditing]="false" dataField="provisioningRegion.name" caption="Region" dataType="string" 
+      [allowFiltering]="false" [allowSorting]="false" [visible]="false">
+    </dxi-column>
+    <dxi-column [allowEditing]="false" cellTemplate="actions" caption="Actions" [allowSorting]="false" [allowFiltering]="false"></dxi-column>
+  </dx-data-grid>
+

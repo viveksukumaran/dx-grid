@@ -1,0 +1,4 @@
+{
+  "baseUrl": "http://testrail-qb-enforcement.process.aureacentral.com/rest/api",
+  "authToken": "dummy"
+}

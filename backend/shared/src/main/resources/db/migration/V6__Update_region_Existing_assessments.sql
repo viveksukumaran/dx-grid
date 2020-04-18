@@ -1,0 +1,1 @@
+update assessment set provisioning_region = (select id from region  where name = 'us-east-1') where provisioning_region is null;

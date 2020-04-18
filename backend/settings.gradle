@@ -1,0 +1,7 @@
+rootProject.name = 'DF-PA-Projects-QA-RWA-Backend'
+
+include 'DF-PA-Projects-QA-RWA-Backend-Shared', 'DF-PA-Projects-QA-RWA-Backend-Api', 'DF-PA-Projects-QA-RWA-Backend-StatusMgmt'
+
+project(":DF-PA-Projects-QA-RWA-Backend-Shared").projectDir = file("shared")
+project(":DF-PA-Projects-QA-RWA-Backend-Api").projectDir = file("salesforce-api")
+project(":DF-PA-Projects-QA-RWA-Backend-StatusMgmt").projectDir = file("status-management")
